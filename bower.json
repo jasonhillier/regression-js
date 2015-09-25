@@ -12,5 +12,5 @@
     "bower_components",
     "example/*"
   ],
-  "main": "index.js"
+  "main": "build/regression.min.js"
 }
