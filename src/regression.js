@@ -295,6 +295,12 @@
 
       var string = 'y = (' + y_min + ' + ' + y_max + '*e^((x-' + xc_b + ')/' + b_b + '))/(1+e^((x-' + xc_b + ')/' + b_b + '))';
 
+      if (typeof order == 'numeric') {
+        var xspan = numeric.linespace(x_min, x_max, (x_max - x_min) / order);
+        var yspan = mySig(xspan, y_min, y_max, b_b, xc_b);
+        return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string, span: {xspan: xspan, yspan: yspan} };
+      }
+
       return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string };
     },
 
@@ -311,29 +317,8 @@
         }
 
         return { equation: [lastvalue], points: results, string: '' + lastvalue };
-      },
-
-    generateValue: function(data, func) {
-      if (typeof func == 'string') {
-
-        if (func == 'sigmoid') {
-
-          function mySig(x_array, ymin, ymax, b, xc)  {
-            var arr = [];
-            for (var i = 0; i < x_array.length; i++) {
-              var sub = Math.exp((x_array[ i ] - xc) / b);
-              var y = (ymin + (ymax * sub)) / (1 + sub);
-              arr.push(y);
-            }
-
-            return arr;
-          }
-
-          return mySig(data.array, data.param[0], data.param[1], data.param[2], data.param[3]);
-
-        }
       }
-    },
+
   };
 
   var regression = (function(method, data, order) {
