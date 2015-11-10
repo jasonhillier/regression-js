@@ -1,20 +1,16 @@
 module.exports = function(grunt) {
 
-
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
-
       options: {
-        preserveComments: 'some'
+        preserveComments: 'some',
       },
-
       build: {
         src: 'src/regression.js',
-        dest: 'build/regression.min.js'
-      }
-    }
+        dest: 'build/regression.min.js',
+      },
+    },
   });
 
   // Load the plugin that provides the "uglify" task.
