@@ -226,7 +226,7 @@
       return { equation: equation, points: results, string: string };
     },
 
-    sigmoid: function(data) {
+    sigmoid: function(data, order) {
 
       function onesArray(length, value) {
           return Array.apply(null, Array(length)).map(function() {return value;});
