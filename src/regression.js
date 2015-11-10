@@ -12,6 +12,8 @@
 ;(function() {
   'use strict';
 
+  var numeric = require('numeric');
+
   var gaussianElimination = function(a, o) {
     var i = 0, j = 0, k = 0, maxrow = 0, tmp = 0, n = a.length - 1, x = new Array(o);
     for (i = 0; i < n; i++) {
