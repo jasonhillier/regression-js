@@ -257,9 +257,6 @@
 
       var y_array = data.map(function(d) { return (d[ 1 ]); });
 
-      console.log(x_array);
-      console.log(y_array);
-
       var ssq = 99999999;
       var xc_b = 0;
       var b_b = 0;
