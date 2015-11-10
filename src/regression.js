@@ -294,8 +294,9 @@
 
       var string = 'y = (' + y_min + ' + ' + y_max + '*e^((x-' + xc_b + ')/' + b_b + '))/(1+e^((x-' + xc_b + ')/' + b_b + '))';
 
-      if (typeof order == 'number') {
-        var xspan = numeric.linspace(x_min, x_max, (x_max - x_min) / order);
+      if (typeof order == 'object') {
+        var offset = order.offset;
+        var xspan = numeric.linspace(x_min - offset, x_max + offset, (x_max - x_min + 2 * offset) / order.grain);
         var yspan = mySig(xspan, y_min, y_max, b_b, xc_b);
         return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string, span: {xspan: xspan, yspan: yspan} };
       }
