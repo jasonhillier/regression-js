@@ -245,14 +245,6 @@
           return arr;
         }
 
-      Array.prototype.max = function() {
-          return Math.max.apply(null, this);
-        };
-
-      Array.prototype.min = function() {
-          return Math.min.apply(null, this);
-        };
-
       var x_array = data.map(function(d) { return (d[ 0 ]); });
 
       var y_array = data.map(function(d) { return (d[ 1 ]); });
@@ -317,7 +309,7 @@
         }
 
         return { equation: [lastvalue], points: results, string: '' + lastvalue };
-      }
+      },
 
   };
 
