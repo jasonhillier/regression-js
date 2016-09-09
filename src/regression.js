@@ -45,7 +45,7 @@
                 var sum = [0, 0, 0, 0, 0], n = 0, results = [];
 
                 for (; n < data.length; n++) {
-                  if (data[n][1] != null) {
+                  if (data[n][1] !== null) {
                     sum[0] += data[n][0];
                     sum[1] += data[n][1];
                     sum[2] += data[n][0] * data[n][0];
@@ -56,23 +56,25 @@
 
                 var gradient = (n * sum[3] - sum[0] * sum[1]) / (n * sum[2] - sum[0] * sum[0]);
                 var intercept = (sum[1] / n) - (gradient * sum[0]) / n;
-              //  var correlation = (n * sum[3] - sum[0] * sum[1]) / Math.sqrt((n * sum[2] - sum[0] * sum[0]) * (n * sum[4] - sum[1] * sum[1]));
-
+                var correlation = (n * sum[3] - sum[0] * sum[1]) / Math.sqrt((n * sum[2] - sum[0] * sum[0]) * (n * sum[4] - sum[1] * sum[1]));
+                var rSquare = Math.pow(correlation, 2);
                 for (var i = 0, len = data.length; i < len; i++) {
                     var coordinate = [data[i][0], data[i][0] * gradient + intercept];
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(gradient*100) / 100 + 'x + ' + Math.round(intercept*100) / 100;
+                var sign = intercept < 0 ? '-' : '+';
 
-                return {equation: [gradient, intercept], points: results, string: string};
+                var string = 'y = ' + Math.round(gradient*10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept*10000) / 10000);
+
+                return {equation: [gradient, intercept], points: results, string: string, correlation: correlation, rSquare: rSquare};
             },
 
             linearThroughOrigin: function(data) {
                 var sum = [0, 0], n = 0, results = [];
 
                 for (; n < data.length; n++) {
-                    if (data[n][1] != null) {
+                    if (data[n][1] !== null) {
                         sum[0] += data[n][0] * data[n][0]; //sumSqX
                         sum[1] += data[n][0] * data[n][1]; //sumXY
                     }
@@ -85,7 +87,7 @@
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(gradient*100) / 100 + 'x';
+                var string = 'y = ' + Math.round(gradient*10000) / 10000 + 'x';
 
                 return {equation: [gradient], points: results, string: string};
             },
@@ -94,7 +96,7 @@
                 var sum = [0, 0, 0, 0, 0, 0], n = 0, results = [];
 
                 for (len = data.length; n < len; n++) {
-                  if (data[n][1] != null) {
+                  if (data[n][1] !== null) {
                     sum[0] += data[n][0];
                     sum[1] += data[n][1];
                     sum[2] += data[n][0] * data[n][0] * data[n][1];
@@ -113,41 +115,47 @@
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(A*100) / 100 + 'e^(' + Math.round(B*100) / 100 + 'x)';
+                var string = 'y = ' + Math.round(A*10000) / 10000 + 'e^(' + Math.round(B*10000) / 10000 + 'x)';
 
                 return {equation: [A, B], points: results, string: string};
             },
 
             logarithmic: function(data) {
-                var sum = [0, 0, 0, 0], n = 0, results = [];
+                var sum = [0, 0, 0, 0, 0], n = 0, results = [];
 
                 for (len = data.length; n < len; n++) {
-                  if (data[n][1] != null) {
+                  if (data[n][1] !== null) {
                     sum[0] += Math.log(data[n][0]);
                     sum[1] += data[n][1] * Math.log(data[n][0]);
                     sum[2] += data[n][1];
                     sum[3] += Math.pow(Math.log(data[n][0]), 2);
+                    sum[4] += Math.pow(data[n][1], 2);
                   }
                 }
 
                 var B = (n * sum[1] - sum[2] * sum[0]) / (n * sum[3] - sum[0] * sum[0]);
                 var A = (sum[2] - B * sum[0]) / n;
 
+                var correlation = (n * sum[1] - sum[2] * sum[0]) / Math.sqrt((n * sum[3] - sum[0] * sum[0]) * (n * sum[4] - sum[2] * sum[2]));
+                var rSquare = Math.pow(correlation, 2);
+
                 for (var i = 0, len = data.length; i < len; i++) {
                     var coordinate = [data[i][0], A + B * Math.log(data[i][0])];
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(A*100) / 100 + ' + ' + Math.round(B*100) / 100 + ' ln(x)';
+                var sign = A < 0 ? '-' : '+';
 
-                return {equation: [A, B], points: results, string: string};
+                var string = 'y = ' + Math.round(B*10000) / 10000 + ' ln(x) ' + sign + " " + Math.abs(Math.round(A*10000) / 10000) ;
+
+                return {equation: [A, B], points: results, string: string, rSquare: rSquare};
             },
 
             power: function(data) {
                 var sum = [0, 0, 0, 0], n = 0, results = [];
 
                 for (len = data.length; n < len; n++) {
-                  if (data[n][1] != null) {
+                  if (data[n][1] !== null) {
                     sum[0] += Math.log(data[n][0]);
                     sum[1] += Math.log(data[n][1]) * Math.log(data[n][0]);
                     sum[2] += Math.log(data[n][1]);
@@ -163,7 +171,7 @@
                     results.push(coordinate);
                 }
 
-                 var string = 'y = ' + Math.round(A*100) / 100 + 'x^' + Math.round(B*100) / 100;
+                 var string = 'y = ' + Math.round(A*10000) / 10000 + 'x^' + Math.round(B*10000) / 10000;
 
                 return {equation: [A, B], points: results, string: string};
             },
@@ -176,15 +184,15 @@
 
                         for (; i < k; i++) {
                            for (var l = 0, len = data.length; l < len; l++) {
-                              if (data[l][1] != null) {
-                               a += Math.pow(data[l][0], i) * data[l][1];
+                              if (data[l][1] !== null) {
+                                a += Math.pow(data[l][0], i) * data[l][1];
                               }
                             }
                             lhs.push(a), a = 0;
                             var c = [];
                             for (var j = 0; j < k; j++) {
                                for (var l = 0, len = data.length; l < len; l++) {
-                                  if (data[l][1] != null) {
+                                  if (data[l][1] !== null) {
                                    b += Math.pow(data[l][0], i + j);
                                   }
                                 }
@@ -208,13 +216,12 @@
 
                     for(var i = equation.length-1; i >= 0; i--){
                       if(i > 1) string += Math.round(equation[i] * Math.pow(10, i)) / Math.pow(10, i)  + 'x^' + i + ' + ';
-                      else if (i == 1) string += Math.round(equation[i]*100) / 100 + 'x' + ' + ';
-                      else string += Math.round(equation[i]*100) / 100;
+                      else if (i == 1) string += Math.round(equation[i]*10000) / 10000 + 'x' + ' + ';
+                      else string += Math.round(equation[i]*10000) / 10000;
                     }
 
                 return {equation: equation, points: results, string: string};
             },
-
             lastvalue: function(data) {
               var results = [];
               var lastvalue = null;
