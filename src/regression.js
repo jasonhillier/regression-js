@@ -65,7 +65,7 @@
 
                 var sign = intercept < 0 ? '-' : '+';
 
-                var string = 'y = ' + Math.round(gradient*10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept*10000) / 10000);
+                var string = 'y = ' + Math.round(gradient * 10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept * 10000) / 10000);
 
                 return {equation: [gradient, intercept], points: results, string: string, correlation: correlation, rSquare: rSquare};
             },
@@ -146,7 +146,7 @@
 
                 var sign = A < 0 ? '-' : '+';
 
-                var string = 'y = ' + Math.round(B*10000) / 10000 + ' ln(x) ' + sign + " " + Math.abs(Math.round(A*10000) / 10000) ;
+                var string = 'y = ' + Math.round(B * 10000) / 10000 + ' ln(x) ' + sign + " " + Math.abs(Math.round(A * 10000) / 10000);
 
                 return {equation: [A, B], points: results, string: string, rSquare: rSquare};
             },
@@ -222,6 +222,29 @@
 
                 return {equation: equation, points: results, string: string};
             },
+
+            movingAverage: function(data, period) {
+            	var result=[], 
+		    nums = [];
+        		  for (var i in data) {
+        		        nums.push(data[i]);
+        		        if (nums.length > period) {
+        		            nums.splice(0, 1);  // remove the first element of the array
+				}
+        		        var sum = 0;
+        		        for (var i in nums) {
+        		            sum += nums[i];
+				}
+        		        var n = period;
+        		        if (nums.length < period) {
+        		            n = nums.length;       
+				}
+        		      	result.push(sum / n);
+        		  }
+        		  result.splice(0, period - 1);   // removed avg which are same as data passed
+        		  return result;
+            },
+	    
             lastvalue: function(data) {
               var results = [];
               var lastvalue = null;
