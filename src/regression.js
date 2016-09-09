@@ -12,6 +12,24 @@
 ;(function(ns) {
     'use strict';
 
+    var determinationCoefficient = function(observations, predictions) {
+      var sum = 0, sse = 0, ssyy = 0, mean = 0, length = observations.length;
+
+      for(var i = 0; i < length; i++){
+        sum += observations[i][1];
+      }
+
+      mean = sum / length;
+
+      for(var i = 0; i < length; i++) {
+        ssyy += Math.pow(observations[i][1] - mean, 2);
+        sse += Math.pow(observations[i][1] - predictions[i][1], 2);
+      }
+
+      return 1 - (sse / ssyy);
+
+    };
+
     var gaussianElimination = function(a, o) {
            var i = 0, j = 0, k = 0, maxrow = 0, tmp = 0, n = a.length - 1, x = new Array(o);
            for (i = 0; i < n; i++) {
@@ -58,6 +76,7 @@
                 var intercept = (sum[1] / n) - (gradient * sum[0]) / n;
                 var correlation = (n * sum[3] - sum[0] * sum[1]) / Math.sqrt((n * sum[2] - sum[0] * sum[0]) * (n * sum[4] - sum[1] * sum[1]));
                 var rSquare = Math.pow(correlation, 2);
+		
                 for (var i = 0, len = data.length; i < len; i++) {
                     var coordinate = [data[i][0], data[i][0] * gradient + intercept];
                     results.push(coordinate);
@@ -67,7 +86,14 @@
 
                 var string = 'y = ' + Math.round(gradient * 10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept * 10000) / 10000);
 
-                return {equation: [gradient, intercept], points: results, string: string, correlation: correlation, rSquare: rSquare};
+                return {
+                  	r2: determinationCoefficient(data, results),
+			equation: [gradient, intercept], 
+			points: results, 
+			string: string, 
+			correlation: correlation, 
+			rSquare: rSquare
+		};
             },
 
             linearThroughOrigin: function(data) {
@@ -117,7 +143,12 @@
 
                 var string = 'y = ' + Math.round(A*10000) / 10000 + 'e^(' + Math.round(B*10000) / 10000 + 'x)';
 
-                return {equation: [A, B], points: results, string: string};
+                return {
+                  r2: determinationCoefficient(data, results),
+                  equation: [A, B],
+                  points: results,
+                  string: string
+                };
             },
 
             logarithmic: function(data) {
@@ -148,7 +179,13 @@
 
                 var string = 'y = ' + Math.round(B * 10000) / 10000 + ' ln(x) ' + sign + " " + Math.abs(Math.round(A * 10000) / 10000);
 
-                return {equation: [A, B], points: results, string: string, rSquare: rSquare};
+                return {
+	        	r2: determinationCoefficient(data, results),
+			equation: [A, B], 
+			points: results, 
+			string: string, 
+			rSquare: rSquare
+		};
             },
 
             power: function(data) {
@@ -171,9 +208,14 @@
                     results.push(coordinate);
                 }
 
-                 var string = 'y = ' + Math.round(A*10000) / 10000 + 'x^' + Math.round(B*10000) / 10000;
+                var string = 'y = ' + Math.round(A * 10000) / 10000 + 'x^' + Math.round(B * 10000) / 10000;
 
-                return {equation: [A, B], points: results, string: string};
+                return {
+                  r2: determinationCoefficient(data, results),
+                  equation: [A, B],
+                  points: results,
+                  string: string
+                };
             },
 
             polynomial: function(data, order) {
@@ -220,7 +262,12 @@
                       else string += Math.round(equation[i]*10000) / 10000;
                     }
 
-                return {equation: equation, points: results, string: string};
+                return {
+                  r2: determinationCoefficient(data, results),
+                  equation: equation,
+                  points: results,
+                  string: string
+                };
             },
 
             movingAverage: function(data, period) {
@@ -258,7 +305,12 @@
                 }
               }
 
-              return {equation: [lastvalue], points: results, string: "" + lastvalue};
+              return {
+                r2: determinationCoefficient(data, results),
+                equation: [lastvalue],
+                points: results,
+                string: "" + lastvalue
+              };
             }
         };
 
