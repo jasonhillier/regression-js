@@ -14,6 +14,7 @@ Linear regression
 -----------------
 
 equation: ```[gradient, y-intercept]``` in the form y = mx + c
+
 ```
 var data = [[0,1],[32, 67] .... [12, 79]];
 var result = regression('linear', data);
@@ -25,6 +26,7 @@ Linear regression through the origin
 -----------------
 
 equation: ```[gradient]``` in the form y = mx
+
 ```
 var data = [[0,1],[32, 67] .... [12, 79]];
 var result = regression('linearThroughOrigin', data);
@@ -49,6 +51,7 @@ Polynomial regression
 ---------------------
 
 equation: ```[a0, .... , an]``` in the form a0x^0 ... + anx^n
+
 ```
 var data = [[0,1],[32, 67] .... [12, 79]];
 var result = regression('polynomial', data, 4);
@@ -69,3 +72,27 @@ var data = [[0,1], [32, null] .... [12, 79]];
 ```
 
 If you use a ```null``` value for data, regression-js will fill it using the trend.
+
+
+
+## Options
+
+---
+
+
+
+### degree
+
+The highest term in the polynomial when expressed in its canonical form. This can be any integer.
+
+    
+    
+### fill
+
+Use this option to replace null values.
+
+* ```'prev'``` fills null values with the preceding value
+* ```'next'``` fills null values with the succeeding value
+
+Alternatively, supplying this option with an integer will replace all null values with that integer.
+

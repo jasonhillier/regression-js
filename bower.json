@@ -10,7 +10,15 @@
   "ignore": [
     "node_modules",
     "bower_components",
-    "example/*"
+    "example",
+    "**/.*",
+    "build",
+    "speed",
+    "test",
+    "*.md",
+    "AUTHORS.txt",
+    "gulpfile.js",
+    "package.json"
   ],
   "main": "src/regression.js"
 }
