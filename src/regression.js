@@ -30,31 +30,40 @@
 
     };
 
+  var numeric = require('numeric');
+
     var gaussianElimination = function(a, o) {
            var i = 0, j = 0, k = 0, maxrow = 0, tmp = 0, n = a.length - 1, x = new Array(o);
            for (i = 0; i < n; i++) {
               maxrow = i;
               for (j = i + 1; j < n; j++) {
-                 if (Math.abs(a[i][j]) > Math.abs(a[i][maxrow]))
+                 if (Math.abs(a[i][j]) > Math.abs(a[i][maxrow])) {
                     maxrow = j;
               }
+      }
+
               for (k = i; k < n + 1; k++) {
                  tmp = a[k][i];
                  a[k][i] = a[k][maxrow];
                  a[k][maxrow] = tmp;
               }
+
               for (j = i + 1; j < n; j++) {
                  for (k = n; k >= i; k--) {
                     a[k][j] -= a[k][i] * a[i][j] / a[i][i];
                  }
               }
            }
+
            for (j = n - 1; j >= 0; j--) {
               tmp = 0;
-              for (k = j + 1; k < n; k++)
+      for (k = j + 1; k < n; k++) {
                  tmp += a[k][j] * x[k];
+      }
+
               x[j] = (a[n][j] - tmp) / a[j][j];
            }
+
            return (x);
     };
 
@@ -222,6 +231,7 @@
                 if(typeof order == 'undefined'){
                     order = 2;
                 }
+
                  var lhs = [], rhs = [], results = [], a = 0, b = 0, i = 0, k = order + 1;
 
                         for (; i < k; i++) {
@@ -230,6 +240,7 @@
                                 a += Math.pow(data[l][0], i) * data[l][1];
                               }
                             }
+
                             lhs.push(a), a = 0;
                             var c = [];
                             for (var j = 0; j < k; j++) {
@@ -238,10 +249,13 @@
                                    b += Math.pow(data[l][0], i + j);
                                   }
                                 }
+
                                 c.push(b), b = 0;
                             }
+
                             rhs.push(c);
                         }
+
                 rhs.push(lhs);
 
                var equation = gaussianElimination(rhs, k);
@@ -251,6 +265,7 @@
                         for (var w = 0; w < equation.length; w++) {
                             answer += equation[w] * Math.pow(data[i][0], w);
                         }
+
                         results.push([data[i][0], answer]);
                     }
 
@@ -292,6 +307,74 @@
         		  return result;
             },
 	    
+    sigmoid: function(data, order) {
+
+      function onesArray(length, value) {
+          return Array.apply(null, Array(length)).map(function() {return value;});
+        }
+
+      function mySig(x_array, ymin, ymax, b, xc)  {
+          var arr = [];
+          for (var i = 0; i < x_array.length; i++) {
+            var sub = Math.exp((x_array[ i ] - xc) / b);
+            var y = (ymin + (ymax * sub)) / (1 + sub);
+            arr.push(y);
+          }
+
+          return arr;
+        }
+
+      var x_array = data.map(function(d) { return (d[ 0 ]); });
+
+      var y_array = data.map(function(d) { return (d[ 1 ]); });
+
+      var ssq = 99999999;
+      var xc_b = 0;
+      var b_b = 0;
+      var results = [];
+      var y_min = Math.min.apply(null, y_array);
+      var y_max = Math.max.apply(null, y_array);
+
+      var x_min = Math.min.apply(null, x_array);
+      var x_max = Math.max.apply(null, x_array);
+
+      for (var b = -1000; b <= 1000; b += 10) {
+        if (b != 0) {
+          for (var xc = x_min; xc < x_max; xc += 10) {
+            var yfit = mySig(x_array, y_min, y_max, b, xc);
+            var tmp = 0;
+            data.forEach(function(element, index, array) {
+                tmp += Math.pow((yfit[ index ] - y_array[ index ]), 2);
+              });
+
+            if (tmp  < ssq) {
+              ssq = tmp;
+              xc_b = xc;
+              b_b = b;
+            }
+          }
+        }
+      }
+
+      var theSig = mySig(x_array, y_min, y_max, b_b, xc_b);
+
+      for (var i = 0, len = data.length; i < len; i++) {
+        var coordinate = [data[ i ][ 0 ], theSig[ i ]];
+        results.push(coordinate);
+      }
+
+      var string = 'y = (' + y_min + ' + ' + y_max + '*e^((x-' + xc_b + ')/' + b_b + '))/(1+e^((x-' + xc_b + ')/' + b_b + '))';
+
+      if (typeof order == 'object') {
+        var offset = order.offset;
+        var xspan = numeric.linspace(x_min - offset, x_max + offset, (x_max - x_min + 2 * offset) / order.grain);
+        var yspan = mySig(xspan, y_min, y_max, b_b, xc_b);
+        return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string, span: {xspan: xspan, yspan: yspan} };
+      }
+
+      return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string };
+    },
+
             lastvalue: function(data) {
               var results = [];
               var lastvalue = null;
@@ -299,8 +382,7 @@
                 if (data[i][1]) {
                   lastvalue = data[i][1];
                   results.push([data[i][0], data[i][1]]);
-                }
-                else {
+          } else {
                   results.push([data[i][0], lastvalue]);
                 }
               }
@@ -309,9 +391,9 @@
                 r2: determinationCoefficient(data, results),
                 equation: [lastvalue],
                 points: results,
-                string: "" + lastvalue
+                string: '' + lastvalue
               };
-            }
+      },
         };
 
 var regression = (function(method, data, order) {
