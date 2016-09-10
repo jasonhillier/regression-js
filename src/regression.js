@@ -38,7 +38,7 @@
                  if (Math.abs(a[i][j]) > Math.abs(a[i][maxrow])) {
                     maxrow = j;
               }
-      }
+            }
 
               for (k = i; k < n + 1; k++) {
                  tmp = a[k][i];
@@ -55,9 +55,9 @@
 
            for (j = n - 1; j >= 0; j--) {
               tmp = 0;
-      for (k = j + 1; k < n; k++) {
+              for (k = j + 1; k < n; k++) {
                  tmp += a[k][j] * x[k];
-      }
+              }
 
               x[j] = (a[n][j] - tmp) / a[j][j];
            }
@@ -83,7 +83,7 @@
                 var intercept = (sum[1] / n) - (gradient * sum[0]) / n;
                 var correlation = (n * sum[3] - sum[0] * sum[1]) / Math.sqrt((n * sum[2] - sum[0] * sum[0]) * (n * sum[4] - sum[1] * sum[1]));
                 var rSquare = Math.pow(correlation, 2);
-		
+
                 for (var i = 0, len = data.length; i < len; i++) {
                     var coordinate = [data[i][0], data[i][0] * gradient + intercept];
                     results.push(coordinate);
@@ -94,13 +94,13 @@
                 var string = 'y = ' + Math.round(gradient * 10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept * 10000) / 10000);
 
                 return {
-                  	r2: determinationCoefficient(data, results),
-			equation: [gradient, intercept], 
-			points: results, 
-			string: string, 
-			correlation: correlation, 
-			rSquare: rSquare
-		};
+                    r2: determinationCoefficient(data, results),
+                    equation: [gradient, intercept],
+                    points: results,
+                    string: string,
+                    correlation: correlation,
+                    rSquare: rSquare
+                  };
             },
 
             linearThroughOrigin: function(data) {
@@ -187,12 +187,12 @@
                 var string = 'y = ' + Math.round(B * 10000) / 10000 + ' ln(x) ' + sign + " " + Math.abs(Math.round(A * 10000) / 10000);
 
                 return {
-	        	r2: determinationCoefficient(data, results),
-			equation: [A, B], 
-			points: results, 
-			string: string, 
-			rSquare: rSquare
-		};
+                    r2: determinationCoefficient(data, results),
+                    equation: [A, B],
+                    points: results,
+                    string: string,
+                    rSquare: rSquare
+                  };
             },
 
             power: function(data) {
@@ -284,27 +284,27 @@
             },
 
             movingAverage: function(data, period) {
-            	var result=[], 
-		    nums = [];
-        		  for (var i in data) {
-        		        nums.push(data[i]);
-        		        if (nums.length > period) {
-        		            nums.splice(0, 1);  // remove the first element of the array
-				}
-        		        var sum = 0;
-        		        for (var i in nums) {
-        		            sum += nums[i];
-				}
-        		        var n = period;
-        		        if (nums.length < period) {
-        		            n = nums.length;       
-				}
-        		      	result.push(sum / n);
-        		  }
-        		  result.splice(0, period - 1);   // removed avg which are same as data passed
-        		  return result;
+              var result=[],
+              nums = [];
+              for (var i in data) {
+                    nums.push(data[i]);
+                    if (nums.length > period) {
+                        nums.splice(0, 1);  // remove the first element of the array
+              }
+                    var sum = 0;
+                    for (var i in nums) {
+                        sum += nums[i];
+                    }
+                    var n = period;
+                    if (nums.length < period) {
+                        n = nums.length;
+                    }
+                    result.push(sum / n);
+              }
+              result.splice(0, period - 1);   // removed avg which are same as data passed
+              return result;
             },
-	    
+
     sigmoid: function(data, order) {
 
       function onesArray(length, value) {
@@ -327,14 +327,14 @@
           if (typeof n === "undefined") {
             n = Math.max(Math.round(b - a) + 1, 1);
           }
-          if (n < 2) { 
-            return n === 1 ? [a] : []; 
+          if (n < 2) {
+            return n === 1 ? [a] : [];
           }
           var i,
               ret = Array(n);
           n--;
-          for (i = n; i >= 0; i--) { 
-            ret[i] = (i * b + (n - i) * a) / n; 
+          for (i = n; i >= 0; i--) {
+            ret[i] = (i * b + (n - i) * a) / n;
           }
           return ret;
       }
