@@ -25,7 +25,7 @@
 * Regression.JS - Regression functions for javascript
 * http://tom-alexander.github.com/regression-js/
 *
-* copyright(c) 2013 Tom Alexander
+* copyright(c) 2016 Tom Alexander
 * Licensed under the MIT license.
 *
 **/
