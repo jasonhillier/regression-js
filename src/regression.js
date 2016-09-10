@@ -30,8 +30,6 @@
 
     };
 
-  var numeric = require('numeric');
-
     var gaussianElimination = function(a, o) {
            var i = 0, j = 0, k = 0, maxrow = 0, tmp = 0, n = a.length - 1, x = new Array(o);
            for (i = 0; i < n; i++) {
@@ -322,7 +320,24 @@
           }
 
           return arr;
-        }
+      }
+
+      // straight copy from numeric.js::numeric.linspace():
+      function linspace(a, b, n) {
+          if (typeof n === "undefined") {
+            n = Math.max(Math.round(b - a) + 1, 1);
+          }
+          if (n < 2) { 
+            return n === 1 ? [a] : []; 
+          }
+          var i,
+              ret = Array(n);
+          n--;
+          for (i = n; i >= 0; i--) { 
+            ret[i] = (i * b + (n - i) * a) / n; 
+          }
+          return ret;
+      }
 
       var x_array = data.map(function(d) { return (d[ 0 ]); });
 
@@ -367,7 +382,7 @@
 
       if (typeof order == 'object') {
         var offset = order.offset;
-        var xspan = numeric.linspace(x_min - offset, x_max + offset, (x_max - x_min + 2 * offset) / order.grain);
+        var xspan = linspace(x_min - offset, x_max + offset, (x_max - x_min + 2 * offset) / order.grain);
         var yspan = mySig(xspan, y_min, y_max, b_b, xc_b);
         return { equation: [y_min, y_max, b_b, xc_b], points: results, string: string, span: {xspan: xspan, yspan: yspan} };
       }
