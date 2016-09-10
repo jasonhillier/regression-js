@@ -1,7 +1,6 @@
 'use strict';
 
 var gulp        = require('gulp'),
-    browserify  = require('browserify'),
     streamify   = require('gulp-streamify'),
     source      = require('vinyl-source-stream'),
     uglify      = require('gulp-uglify'),
@@ -12,9 +11,7 @@ var gulp        = require('gulp'),
     mocha       = require('gulp-mocha');
 
 gulp.task('build', function () {
-    return browserify('./src/regression')
-        .bundle({standalone: 'regression', debug: true})
-        .pipe(source('regression.js'))
+    return gulp.src('./src/regression.js')
         .pipe(license('MIT', {organization: 'Tom Alexander'}))
         .pipe(gulp.dest('./dist/'))
         .pipe(rename({ suffix: '.min' }))
