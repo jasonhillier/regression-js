@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'src/regression.js',
-        dest: 'build/regression.min.js',
+        dest: 'dist/regression.min.js',
       },
     },
   });
