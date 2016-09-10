@@ -1,7 +1,7 @@
 'use strict';
 
 var assert     = require('assert'),
-    Result     = require('../src/Result.js'),
+    Result     = require('./__Result__.js'),
     regression = require('../src/regression.js');
 
 describe('Model', function () {
