@@ -1,35 +1,31 @@
 {
   "name": "regression",
-  "description" : "Javascript least squares data fitting methods",
-  "author" : "Tom Alexander <me@tomalexander.co.nz>",
+  "description": "Javascript least squares data fitting methods",
+  "author": "Tom Alexander <me@tomalexander.co.nz>",
   "version": "1.2.1",
-  "license" : "MIT",
+  "license": "MIT",
   "repository": "Tom-Alexander/regression-js",
-  "keywords" : [
-        "regression",
-        "data",
-        "fitting",
-        "modelling",
-        "analysis"
+  "keywords": [
+    "regression",
+    "data",
+    "fitting",
+    "modelling",
+    "analysis"
   ],
   "devDependencies": {
-	  "grunt": "~0.4.1",
-	  "grunt-contrib-uglify": "~0.2.2",
-	  
-	  
-        "gulp" : "*",
-        "browserify" : "*",
-        "vinyl-source-stream" : "*",
-        "gulp-license" : "*",
-        "gulp-streamify" : "*",
-        "gulp-jshint" : "*",
-        "gulp-uglify" : "*",
-        "gulp-rename" : "*",
-        "gulp-notify" : "*",
-        "gulp-mocha" : "0.4.1"
-	  
+    "grunt": "1.0.1",
+    "grunt-contrib-uglify": "2.0.0",
+    "gulp": "3.9.1",
+    "jshint": "2.9.3",
+    "gulp-jshint": "2.0.1",
+    "gulp-license": "1.1.0",
+    "gulp-mocha": "3.0.1",
+    "gulp-notify": "2.2.0",
+    "gulp-rename": "1.2.2",
+    "gulp-streamify": "1.0.2",
+    "gulp-uglify": "2.0.0",
+    "vinyl-source-stream": "1.1.0"
   },
   "dependencies": {
-    "numeric": "^1.2.6"
   }
 }
