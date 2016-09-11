@@ -1,11 +1,9 @@
 {
-  "name": "regression-js",
-  "version": "1.2.0",
+  "name": "regression",
+  "description": "Javascript least squares data fitting methods",
   "homepage": "https://github.com/Tom-Alexander/regression-js",
-  "authors": [
-    "Tom-Alexander <me@tomalexander.co.nz>"
-  ],
-  "description": "Javascript least squares data fitting",
+  "author": "Tom Alexander <me@tomalexander.co.nz>",
+  "version": "1.4.0-11",
   "license": "MIT",
   "ignore": [
     "node_modules",

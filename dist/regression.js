@@ -135,6 +135,9 @@
                 }
 
                 var gradient = sum[1] / sum[0];
+                var intercept = (sum[1] / n) - (gradient * sum[0]) / n;
+                var correlation = (sum[0] * sum[1]) / Math.sqrt((sum[0] * sum[0]) * (sum[1] * sum[1]));
+                var rSquare = Math.pow(correlation, 2);
 
                 for (var i = 0, len = data.length; i < len; i++) {
                     var coordinate = [data[i][0], data[i][0] * gradient];
@@ -143,7 +146,14 @@
 
                 var string = 'y = ' + Math.round(gradient*10000) / 10000 + 'x';
 
-                return {equation: [gradient], points: results, string: string};
+                return {
+                    r2: determinationCoefficient(data, results),
+                    equation: [gradient, intercept],
+                    points: results,
+                    string: string,
+                    correlation: correlation,
+                    rSquare: rSquare
+                  };
             },
 
             exponential: function(data) {
