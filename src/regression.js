@@ -91,7 +91,7 @@
 
                 var sign = intercept < 0 ? '-' : '+';
 
-                var string = 'y = ' + Math.round(gradient * 10000) / 10000 + 'x ' + sign + " " + Math.abs(Math.round(intercept * 10000) / 10000);
+                var string = 'y = ' + gradient + 'x ' + sign + " " + Math.abs(intercept);
 
                 return {
                     r2: determinationCoefficient(data, results),
@@ -123,7 +123,7 @@
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(gradient*10000) / 10000 + 'x';
+                var string = 'y = ' + gradient + 'x';
 
                 return {
                     r2: determinationCoefficient(data, results),
@@ -158,7 +158,7 @@
                     results.push(coordinate);
                 }
 
-                var string = 'y = ' + Math.round(A*10000) / 10000 + 'e^(' + Math.round(B*10000) / 10000 + 'x)';
+                var string = 'y = ' + A + 'e^(' + B + 'x)';
 
                 return {
                   r2: determinationCoefficient(data, results),
@@ -280,9 +280,9 @@
                     var string = 'y = ';
 
                     for(var i = equation.length-1; i >= 0; i--){
-                      if(i > 1) string += Math.round(equation[i] * Math.pow(10, i)) / Math.pow(10, i)  + 'x^' + i + ' + ';
-                      else if (i == 1) string += Math.round(equation[i]*10000) / 10000 + 'x' + ' + ';
-                      else string += Math.round(equation[i]*10000) / 10000;
+                      if(i > 1) string += equation[i]  + 'x^' + i + ' + ';
+                      else if (i == 1) string += equation[i] + 'x' + ' + ';
+                      else string += equation[i];
                     }
 
                 return {
