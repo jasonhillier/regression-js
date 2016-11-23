@@ -1,3 +1,5 @@
+Forked from https://github.com/GerHobbelt/regression-js
+
 regression.js is a javascript library containing a collection of least squares fitting methods for finding a trend in a set of data. It currently contains methods for linear, exponential, logarithmic, power and polynomial trends.
 
 Usage
